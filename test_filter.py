@@ -6,6 +6,15 @@ jobs = [
     ("Frontend Developer", "Systems Ltd", "Karachi")
 ]
 
-result = filter_jobs(jobs, "Cyber")
+print("Search by title:")
+print(filter_jobs(jobs, "Python"))
 
-print(result)
+print()
+
+print("Search by company:")
+print(filter_jobs(jobs, "Google"))
+
+print()
+
+print("Search by location:")
+print(filter_jobs(jobs, "Karachi"))
