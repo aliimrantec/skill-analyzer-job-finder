@@ -64,5 +64,25 @@ def save_job(title, company, location, job_url, posted_time):
     connection.close()
 
 
+def get_all_jobs():
+    """
+    Return all jobs from the database.
+    """
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM jobs")
+
+    jobs = cursor.fetchall()
+
+    connection.close()
+
+    return jobs
+
+
 if __name__ == "__main__":
     initialize_database()
+
+    jobs = get_all_jobs()
+    print(jobs)
