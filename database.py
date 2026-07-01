@@ -62,6 +62,27 @@ def save_job(title, company, location, job_url, posted_time):
 
     connection.commit()
     connection.close()
+def add_user(username, email, password):
+    """
+    Save a new user into the database.
+    """
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO users (username, email, password)
+        VALUES (?, ?, ?)
+    """, (username, email, password))
+
+    connection.commit()
+    connection.close()
+
+
+
+
+
+
 
 
 def get_all_jobs():
@@ -79,10 +100,21 @@ def get_all_jobs():
     connection.close()
 
     return jobs
+def get_all_users():
+    """
+    Return all users from the database.
+    """
 
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM users")
+
+    users = cursor.fetchall()
+
+    connection.close()
+
+    return users
 
 if __name__ == "__main__":
     initialize_database()
-
-    jobs = get_all_jobs()
-    print(jobs)
