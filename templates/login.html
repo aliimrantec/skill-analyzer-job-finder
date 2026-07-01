@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Sign in · {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+<div class="auth-wrap rise">
+  <div class="auth-split">
+    <aside class="auth-brand">
+      <div class="ab-logo">
+        <svg width="48" height="48" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="12" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="19" cy="19" r="9.5" stroke="#fff" stroke-width="2.6" opacity="0.95"/>
+          <circle cx="19" cy="19" r="5" stroke="#fff" stroke-width="2" opacity="0.5"/>
+          <path d="M26.5 26.5L34 34" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="19" cy="19" r="2" fill="#fff"/>
+          <path d="M28 11a9 9 0 0 1 5 8" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+          <path d="M30.5 8.5a13 13 0 0 1 6.5 11.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity="0.3"/>
+        </svg>
+        <span>{{ APP_NAME }}</span>
+      </div>
+      <h2>Find jobs posted<br>in the last hour.</h2>
+      <ul class="ab-features">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+          Search LinkedIn, Indeed, Rozee.pk &amp; Remotive together
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+          Filter by country, city and exact job category
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+          Only relevant jobs — no off-topic results
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+          Freshest roles, instantly
+        </li>
+      </ul>
+      <div class="ab-foot">Developed by {{ TEAM }}</div>
+    </aside>
+
+    <div class="auth-form-side">
+      <p class="eyebrow">— Welcome back</p>
+      <h1 class="title">Sign in</h1>
+      <p class="subtitle">Access your job search dashboard.</p>
+
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="input-wrap has-ico">
+            <span class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </span>
+            <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap has-ico">
+            <span class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••" />
+          </div>
+        </div>
+        <button type="submit" class="btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Sign In
+        </button>
+      </form>
+
+      <p class="form-foot">No account yet? <a href="{{ url_for('signup') }}">Create one &rarr;</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
