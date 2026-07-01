@@ -110,5 +110,48 @@
 
   </form>
 </div>
+<!-- Recent searches -->
+{% if recent %}
+<div class="recent-wrap rise">
+  <div class="recent-head">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    Recent searches
+  </div>
+  {% for r in recent %}
+  <div class="recent-row">
+    <div class="rr-left">
+      <span class="tag">{{ r.category }}</span>
+      <span class="rr-loc">{{ r.region }}</span>
+    </div>
+    <div class="rr-right">
+      <span class="rr-count">{{ r.results_count }} found</span>
+      <span class="rr-time">{{ r.created_at.strftime('%d %b · %H:%M') }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<script>
+(function(){
+  var sel   = document.getElementById("window");
+  var field = document.getElementById("custom-field");
+  var input = document.getElementById("custom_minutes");
+  var CUSTOM = {{ custom_window_label | tojson }};
+  var form  = document.querySelector("form");
+  var btn   = document.getElementById("searchBtn");
+  function sync(){
+    var c = sel.value === CUSTOM;
+    field.hidden = !c; input.required = c;
+    if(!c) input.value = "";
+  }
+  sel.addEventListener("change", sync); sync();
+  form.addEventListener("submit", function(){
+    btn.disabled = true;
+    btn.querySelector(".btn-label").hidden  = true;
+    btn.querySelector(".btn-loading").hidden = false;
+  });
+})();
+</script>
 
 {% endblock %}
