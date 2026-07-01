@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ APP_NAME }} · Jobs posted in the last hour{% endblock %}
+
+{% block content %}
+<section class="lp-hero rise">
+  <div class="lp-hero-copy">
+    <p class="eyebrow">Real-time job radar</p>
+    <h1 class="lp-title">
+      Catch jobs the <span class="grad">moment</span> they go live.
+    </h1>
+    <p class="lp-sub">
+      {{ APP_NAME }} scans <b>LinkedIn</b>, <b>Indeed</b> and <b>Rozee.pk</b> at the
+      same time and surfaces only the freshest roles — posted in the last couple of
+      hours, not last week. Stop refreshing five tabs. Run one search.
+    </p>
+    <div class="lp-cta">
+      <a class="btn btn-inline" href="{{ url_for('signup') }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        Create your free account
+      </a>
+      <a class="btn-ghost" href="{{ url_for('login') }}">I already have an account</a>
+    </div>
+    <div class="platforms lp-platforms">
+      <span>We search:</span>
+      <span class="pf"><span class="pf-dot"></span> LinkedIn</span>
+      <span class="pf"><span class="pf-dot"></span> Indeed</span>
+      <span class="pf"><span class="pf-dot"></span> Rozee.pk</span>
+    </div>
+  </div>
+
+  <div class="lp-hero-card rise" style="animation-delay:.1s" aria-hidden="true">
+    <div class="lpc-head">
+      <span class="lpc-dot r"></span><span class="lpc-dot y"></span><span class="lpc-dot g"></span>
+      <span class="lpc-title">live results</span>
+    </div>
+    <div class="lpc-row">
+      <div class="lpc-logo">P</div>
+      <div><div class="lpc-job">Python Developer</div><div class="lpc-meta">Acme · Lahore</div></div>
+      <span class="lpc-time">2 min ago</span>
+    </div>
+    <div class="lpc-row">
+      <div class="lpc-logo">G</div>
+      <div><div class="lpc-job">Backend Engineer</div><div class="lpc-meta">Globex · Remote</div></div>
+      <span class="lpc-time">11 min ago</span>
+    </div>
+    <div class="lpc-row">
+      <div class="lpc-logo">S</div>
+      <div><div class="lpc-job">Data Analyst</div><div class="lpc-meta">Systems Ltd · Karachi</div></div>
+      <span class="lpc-time">38 min ago</span>
+    </div>
+    <div class="lpc-chips">
+      <span class="chip ok">LinkedIn · 6 shown</span>
+      <span class="chip ok">Rozee.pk · 3 shown</span>
+    </div>
+  </div>
+</section>
+{% endblock %}
