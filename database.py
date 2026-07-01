@@ -12,12 +12,13 @@ def get_connection():
 
 def initialize_database():
     """
-    Initialize SQLite database.
+    Initialize the SQLite database.
     """
 
     connection = get_connection()
     cursor = connection.cursor()
 
+    # Create users table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +27,9 @@ def initialize_database():
             password TEXT NOT NULL
         )
     """)
-        cursor.execute("""
+
+    # Create jobs table
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -40,7 +43,25 @@ def initialize_database():
     connection.commit()
     connection.close()
 
-    print("User table created successfully.")
+    print("Database initialized successfully.")
+
+
+def save_job(title, company, location, job_url, posted_time):
+    """
+    Save a job into the SQLite database.
+    """
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO jobs
+        (title, company, location, job_url, posted_time)
+        VALUES (?, ?, ?, ?, ?)
+    """, (title, company, location, job_url, posted_time))
+
+    connection.commit()
+    connection.close()
 
 
 if __name__ == "__main__":
