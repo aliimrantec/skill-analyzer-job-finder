@@ -29,5 +29,36 @@ COUNTRIES = [
     "United Arab Emirates", "Saudi Arabia", "Canada",
     "Australia", "Germany", "India",
 ]
+CATEGORIES = {
+    "Programming Languages": [
+        "Python Developer","Java Developer","JavaScript Developer",
+        "TypeScript Developer","C Developer","C++ Developer",
+        "C# Developer","PHP Developer","Ruby Developer",
+        "Go Developer","Rust Developer","Kotlin Developer","Swift Developer",
+    ],
+    "Web Development": [
+        "Frontend Developer","Backend Developer","Full Stack Developer",
+        "Web Developer","React Developer","Angular Developer",
+        "Vue.js Developer","Node.js Developer","WordPress Developer",
+        "Django Developer","Laravel Developer",
+    ],
+    "Mobile": [
+        "Android Developer","iOS Developer","Flutter Developer",
+        "React Native Developer","Mobile App Developer",
+    ],
+    "Data & AI": [
+        "Data Scientist","Data Analyst","Machine Learning Engineer",
+        "AI Engineer","Data Engineer","Business Intelligence Analyst",
+    ],
+    "Infrastructure & Security": [
+        "DevOps Engineer","Cloud Engineer","AWS Engineer",
+        "Cybersecurity Engineer","Network Engineer","System Administrator",
+        "Database Administrator","Linux Administrator",
+    ],
+    "Other Tech": [
+        "Software Engineer","QA Engineer","UI/UX Designer",
+        "Product Manager","Blockchain Developer","Embedded Systems Engineer",
+    ],
+}
 
 
