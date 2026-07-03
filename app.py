@@ -24,3 +24,10 @@ DEFAULT_WINDOW = "Last 2.5 hours"
 CUSTOM_WINDOW_LABEL = "Custom (minutes)"
 MIN_CUSTOM_MINUTES  = 1
 MAX_CUSTOM_MINUTES  = 10_080
+COUNTRIES = [
+    "Pakistan", "United States", "United Kingdom",
+    "United Arab Emirates", "Saudi Arabia", "Canada",
+    "Australia", "Germany", "India",
+]
+
+
