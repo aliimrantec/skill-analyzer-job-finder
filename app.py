@@ -60,5 +60,20 @@ CATEGORIES = {
         "Product Manager","Blockchain Developer","Embedded Systems Engineer",
     ],
 }
-
+def _resolve_window(form):
+    label = form.get("window", DEFAULT_WINDOW)
+    if label == CUSTOM_WINDOW_LABEL:
+        raw = (form.get("custom_minutes") or "").strip()
+        if not raw:
+            raise ValueError("Please enter the number of minutes.")
+        try:
+            minutes = int(float(raw))
+        except (ValueError, TypeError):
+            raise ValueError("Custom window must be a whole number.")
+        if minutes <= 0:
+            raise ValueError("Time window must be at least 1 minute.")
+        minutes = min(minutes, MAX_CUSTOM_MINUTES)
+        return minutes * 60, f"Last {minutes} min"
+    seconds = WINDOWS_MAP.get(label, WINDOWS_MAP[DEFAULT_WINDOW])
+    return seconds, label
 
