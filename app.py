@@ -104,3 +104,29 @@ def create_app() -> Flask:
             TEAM=app.config["TEAM"],
             api_configured=bool(os.environ.get("JSEARCH_API_KEY", "").strip()),
         )
+    @app.route("/signup", methods=["GET", "POST"])
+    def signup():
+        if current_user.is_authenticated:
+            return redirect(url_for("dashboard"))
+        if request.method == "POST":
+            username = request.form.get("username", "").strip()
+            email    = request.form.get("email", "").strip().lower()
+            password = request.form.get("password", "")
+            confirm  = request.form.get("confirm", "")
+            errors = []
+            if len(username) < 3:          errors.append("Username must be at least 3 characters.")
+            if not EMAIL_RE.match(email):  errors.append("Enter a valid email address.")
+            if len(password) < 8:          errors.append("Password must be at least 8 characters.")
+            if password != confirm:         errors.append("Passwords do not match.")
+            if User.query.filter_by(email=email).first():    errors.append("Email already registered.")
+            if User.query.filter_by(username=username).first(): errors.append("Username already taken.")
+            if errors:
+                for e in errors: flash(e, "danger")
+                return render_template("signup.html", username=username, email=email)
+            u = User(username=username, email=email)
+            u.set_password(password)
+            db.session.add(u)
+            db.session.commit()
+            flash("Account created — please sign in.", "success")
+            return redirect(url_for("login"))
+        return render_template("signup.html")
