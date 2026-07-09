@@ -118,6 +118,27 @@ def get_all_jobs():
 
     return jobs
 
+
+
+def get_jobs_by_company(company):
+    """
+    Return all jobs for a specific company.
+    """
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM jobs
+        WHERE company = ?
+    """, (company,))
+
+    jobs = cursor.fetchall()
+
+    connection.close()
+
+    return jobs
+
 def get_user_by_email(email):
     """
     Return one user by email.
