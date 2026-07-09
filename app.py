@@ -130,3 +130,24 @@ def create_app() -> Flask:
             flash("Account created — please sign in.", "success")
             return redirect(url_for("login"))
         return render_template("signup.html")
+    @app.route("/login", methods=["GET", "POST"])
+    def login():
+        if current_user.is_authenticated:
+            return redirect(url_for("dashboard"))
+        if request.method == "POST":
+            email    = request.form.get("email", "").strip().lower()
+            password = request.form.get("password", "")
+            user     = User.query.filter_by(email=email).first()
+            if user and user.check_password(password):
+                login_user(user)
+                flash(f"Welcome back, {user.username}!", "success")
+                return redirect(request.args.get("next") or url_for("dashboard"))
+            flash("Incorrect email or password.", "danger")
+        return render_template("login.html")
+
+    @app.route("/logout")
+    @login_required
+    def logout():
+        logout_user()
+        flash("You have been logged out.", "success")
+        return redirect(url_for("login"))
