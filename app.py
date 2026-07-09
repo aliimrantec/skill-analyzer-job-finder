@@ -215,3 +215,22 @@ def create_app() -> Flask:
             "results.html", jobs=jobs, status=status,
             region=location, category=category, window_label=window_label,
         )
+    @app.errorhandler(404)
+    def not_found(_e):
+        return render_template("error.html", code=404,
+            heading="Page not found", message="This page doesn't exist."), 404
+
+    @app.errorhandler(500)
+    def server_error(_e):
+        return render_template("error.html", code=500,
+            heading="Server error", message="Something went wrong. Please try again."), 500
+
+    return app
+
+
+app = create_app()
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
