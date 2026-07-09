@@ -46,22 +46,39 @@ def initialize_database():
     print("Database initialized successfully.")
 
 
-def save_job(title, company, location, job_url, posted_time):
+def job_exists(title, company):
     """
-    Save a job into the SQLite database.
+    Check if a job already exists in the database.
     """
 
     connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
-        INSERT INTO jobs
-        (title, company, location, job_url, posted_time)
-        VALUES (?, ?, ?, ?, ?)
-    """, (title, company, location, job_url, posted_time))
+        SELECT * FROM jobs
+        WHERE title = ? AND company = ?
+    """, (title, company))
 
-    connection.commit()
+    job = cursor.fetchone()
+
     connection.close()
+
+    return job is not None
+
+
+def save_job(title, company, location, job_url, posted_time):
+    """
+    Save a job into the SQLite database.
+    """
+
+    if job_exists(title, company):
+        print("Job already exists.")
+        return
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    
 def add_user(username, email, password):
     """
     Save a new user into the database.
@@ -136,6 +153,7 @@ def get_all_users():
     connection.close()
 
     return users
+
 
 if __name__ == "__main__":
     initialize_database()
