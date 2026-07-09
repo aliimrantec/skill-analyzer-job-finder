@@ -77,3 +77,30 @@ def _resolve_window(form):
     seconds = WINDOWS_MAP.get(label, WINDOWS_MAP[DEFAULT_WINDOW])
     return seconds, label
 
+def create_app() -> Flask:
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+
+    os.makedirs(os.path.join(os.path.dirname(__file__), "instance"), exist_ok=True)
+    db.init_app(app)
+
+    lm = LoginManager()
+    lm.login_view = "login"
+    lm.login_message_category = "warning"
+    lm.init_app(app)
+
+    @lm.user_loader
+    def load_user(uid):
+        return db.session.get(User, int(uid))
+
+    @app.context_processor
+    def inject_globals():
+        return dict(
+            APP_NAME=app.config["APP_NAME"],
+            APP_SHORT=app.config.get("APP_SHORT", "SAJF"),
+            TEAM=app.config["TEAM"],
+            api_configured=bool(os.environ.get("JSEARCH_API_KEY", "").strip()),
+        )
