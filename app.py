@@ -151,3 +151,67 @@ def create_app() -> Flask:
         logout_user()
         flash("You have been logged out.", "success")
         return redirect(url_for("login"))
+    @app.route("/")
+    def landing():
+        if current_user.is_authenticated:
+            return redirect(url_for("dashboard"))
+        return render_template("landing.html")
+
+    @app.route("/dashboard")
+    @login_required
+    def dashboard():
+        recent = (SearchLog.query.filter_by(user_id=current_user.id)
+                  .order_by(SearchLog.created_at.desc()).limit(5).all())
+        return render_template(
+            "dashboard.html",
+            countries=COUNTRIES, categories=CATEGORIES,
+            windows=WINDOW_LABELS, default_window=DEFAULT_WINDOW,
+            custom_window_label=CUSTOM_WINDOW_LABEL,
+            min_custom_minutes=MIN_CUSTOM_MINUTES,
+            max_custom_minutes=MAX_CUSTOM_MINUTES,
+            recent=recent,
+        )
+
+    @app.route("/search", methods=["POST"])
+    @login_required
+    def search():
+        country  = request.form.get("country",  "").strip()
+        city     = request.form.get("region",   "").strip()
+        category = request.form.get("category", "").strip()
+
+        if not country or not category:
+            flash("Please select a country and job category.", "danger")
+            return redirect(url_for("dashboard"))
+
+        try:
+            window_secs, window_label = _resolve_window(request.form)
+        except ValueError as exc:
+            flash(str(exc), "danger")
+            return redirect(url_for("dashboard"))
+
+        location = ", ".join(p for p in [city, country] if p)
+
+        try:
+            jobs, status = scrapers.aggregate(
+                query=category, location=location,
+                window_seconds=window_secs,
+                timeout=app.config.get("REQUEST_TIMEOUT", 15),
+            )
+        except Exception:
+            app.logger.exception("search: aggregate failed")
+            flash("Something went wrong. Please try again.", "danger")
+            return redirect(url_for("dashboard"))
+
+        try:
+            db.session.add(SearchLog(
+                user_id=current_user.id, region=location,
+                category=category, results_count=len(jobs),
+            ))
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+
+        return render_template(
+            "results.html", jobs=jobs, status=status,
+            region=location, category=category, window_label=window_label,
+        )
