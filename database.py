@@ -100,6 +100,27 @@ def get_all_jobs():
     connection.close()
 
     return jobs
+
+def get_user_by_email(email):
+    """
+    Return one user by email.
+    """
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM users
+        WHERE email = ?
+    """, (email,))
+
+    user = cursor.fetchone()
+
+    connection.close()
+
+    return user
+
+
 def get_all_users():
     """
     Return all users from the database.
