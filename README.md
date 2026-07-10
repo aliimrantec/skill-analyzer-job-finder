@@ -1,11 +1,7 @@
-# Skill Analyzer and Job Finder — v7
+# Skill Analyzer and Job Finder 
 
 Searches **LinkedIn**, **Indeed**, and **Rozee.pk** simultaneously for the
 top 10 most-recent jobs matching your chosen skill category.
-
----
-
-## How sources are accessed
 
 | Source | Official API? | What we use |
 |---|---|---|
