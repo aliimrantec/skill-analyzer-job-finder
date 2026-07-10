@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Results · {{ APP_NAME }}{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="res-header rise">
+  <a href="{{ url_for('dashboard') }}" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
+    New search
+  </a>
+  <div class="res-meta">
+    <span class="tag tag-lg">{{ category }}</span>
+    <span class="res-in">in</span>
+    <span class="res-loc">{{ region }}</span>
+    <span class="res-dot">·</span>
+    <span class="res-win">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      {{ window_label }}
+    </span>
+  </div>
+</div>
+
+{% if jobs %}
+
+<!-- Stats bar -->
+<div class="res-stats rise">
+  <div class="res-stat-main">
+    <span class="res-num">{{ jobs|length }}</span>
+    <span class="res-num-label">job{{ 's' if jobs|length != 1 else '' }} found</span>
+    <span class="res-badge">Top {{ jobs|length }}</span>
+  </div>
+  <div class="res-sources">
+    {% for name, st in status.items() %}
+    <span class="src-chip src-{{ st.state }}">
+      <span class="src-dot"></span>{{ name }} · {{ st.label() }}
+    </span>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Job cards -->
+<div class="job-grid">
+  {% for job in jobs %}
+  <a class="job-card rise" href="{{ job.url }}" target="_blank" rel="noopener noreferrer"
+     style="animation-delay:{{ loop.index0 * 0.05 }}s">
+
+    <div class="jc-left">
+      <div class="jc-avatar">{{ job.company[0] | upper if job.company else '?' }}</div>
+    </div>
+
+    <div class="jc-body">
+      <div class="jc-row1">
+        <h2 class="jc-title">{{ job.title }}</h2>
+        <span class="jc-src jc-src-{{ job.source | lower | replace('.','') | replace(' ','') }}">
+          {{ job.source }}
+        </span>
+      </div>
+      <div class="jc-row2">
+        <span class="jc-company">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M8 9V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          {{ job.company }}
+        </span>
+        <span class="jc-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          {{ job.location }}
+        </span>
+        <span class="jc-time {{ 'jc-fresh' if job.posted_at else '' }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          {{ job.posted_display }}
+        </span>
+      </div>
+    </div>
+
+    <div class="jc-rank">#{{ loop.index }}</div>
+
+    <div class="jc-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+
+<!-- Empty state -->
+<div class="empty-state rise">
+  <div class="empty-icon">
+    <svg viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="30" stroke="var(--border)" stroke-width="2"/>
+      <circle cx="28" cy="28" r="11" stroke="var(--dim)" stroke-width="2"/>
+      <path d="M37 37L50 50" stroke="var(--dim)" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h3>No jobs found</h3>
+  <p>No results for <strong>{{ category }}</strong> in <strong>{{ region }}</strong> within <strong>{{ window_label | lower }}</strong>. Try a wider time window or different location.</p>
+  <a href="{{ url_for('dashboard') }}" class="back-btn" style="margin-top:8px">Try another search</a>
+</div>
+
+{% endif %}
+{% endblock %}
+
